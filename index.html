@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LibraTrack — Library Management System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark">LT</div>
+    <div class="brand-text">
+      <span class="brand-name">LibraTrack</span>
+      <span class="brand-sub">Central Library</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav" id="sidebarNav">
+    <button class="nav-item active" data-view="dashboard">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M4 13h6V4H4v9zm0 7h6v-5H4v5zm10 0h6V11h-6v9zm0-16v5h6V4h-6z"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-item" data-view="books">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M6 2h13a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v14h12V4H6zm0 16a.5.5 0 0 0 .5.5H18v-1H6.5a.5.5 0 0 0-.5.5z"/></svg>
+      <span>Books</span>
+    </button>
+    <button class="nav-item" data-view="members">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span>Members</span>
+    </button>
+    <button class="nav-item" data-view="issue">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M20 6h-4l-2-2h-4L8 6H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-8 12-4-4h2.5V9h3v5H16z"/></svg>
+      <span>Issue Book</span>
+    </button>
+    <button class="nav-item" data-view="return">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M20 6h-4l-2-2h-4L8 6H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-8 4 4 4h-2.5v5h-3v-5H8z"/></svg>
+      <span>Return Book</span>
+    </button>
+    <button class="nav-item" data-view="transactions">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M9 3v2H4v2h1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7h1V5h-5V3H9zm2 6h2v9h-2V9zM7 9h2v9H7V9zm8 0h2v9h-2V9z"/></svg>
+      <span>Transactions</span>
+    </button>
+    <button class="nav-item" data-view="reports">
+      <svg viewBox="0 0 24 24" class="nav-icon"><path d="M5 3h14a1 1 0 0 1 1 1v16l-4-3-3 3-3-3-3 3-3-3-1 .8V4a1 1 0 0 1 1-1zm2 5h10V6H7v2zm0 4h10v-2H7v2zm0 4h6v-2H7v2z"/></svg>
+      <span>Reports</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-note">Prototype build</div>
+    <div class="footer-sub">Ready for REST API integration</div>
+  </div>
+</aside>
+<div class="sidebar-scrim" id="sidebarScrim"></div>
+
+<!-- ===================== MAIN ===================== -->
+<div class="main">
+
+  <header class="topbar">
+    <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+    </button>
+
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      <input type="text" id="globalSearch" placeholder="Search books, members, transactions…">
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" id="notifBtn" title="Overdue alerts">
+        <svg viewBox="0 0 24 24"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6v-5a6 6 0 0 0-5-5.91V4a1 1 0 0 0-2 0v1.09A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        <span class="notif-dot" id="notifDot" hidden></span>
+      </button>
+      <div class="topbar-user">
+        <div class="user-avatar">AD</div>
+        <div class="user-meta">
+          <span class="user-name">Admin</span>
+          <span class="user-role">Librarian</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content" id="content">
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="view active" id="view-dashboard">
+      <div class="view-head">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="view-sub">Live overview of the library's collection and activity</p>
+        </div>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Books by category</h2>
+          </div>
+          <canvas id="chartCategory" height="220"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Issue / return activity — last 7 days</h2>
+          </div>
+          <canvas id="chartActivity" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h2>Most borrowed books</h2></div>
+          <div id="mostBorrowedList" class="mini-list"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Recent activity</h2></div>
+          <div id="recentActivityList" class="mini-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- BOOKS ---------- -->
+    <section class="view" id="view-books">
+      <div class="view-head">
+        <div>
+          <h1>Books</h1>
+          <p class="view-sub">Manage the library's catalog</p>
+        </div>
+        <button class="btn btn-primary" id="btnAddBook">
+          <svg viewBox="0 0 24 24" class="btn-icon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
+          Add Book
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-search">
+          <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <input type="text" id="bookSearch" placeholder="Search by title, author, ISBN or Book ID">
+        </div>
+        <select id="bookCategoryFilter" class="select"></select>
+        <select id="bookAvailFilter" class="select">
+          <option value="">All availability</option>
+          <option value="available">Available</option>
+          <option value="unavailable">Unavailable</option>
+        </select>
+        <select id="bookSort" class="select">
+          <option value="">Sort by</option>
+          <option value="title">Title (A–Z)</option>
+          <option value="author">Author (A–Z)</option>
+          <option value="available">Available copies</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" id="booksTable">
+          <thead>
+            <tr>
+              <th>Book ID</th><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th>
+              <th>Publisher</th><th>Year</th><th>Total</th><th>Available</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="booksTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="booksEmpty" hidden>
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <p>No books found</p>
+          <span>Try adjusting your search or filters</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- MEMBERS ---------- -->
+    <section class="view" id="view-members">
+      <div class="view-head">
+        <div>
+          <h1>Members</h1>
+          <p class="view-sub">Students and staff registered with the library</p>
+        </div>
+        <button class="btn btn-primary" id="btnAddMember">
+          <svg viewBox="0 0 24 24" class="btn-icon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
+          Add Member
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-search">
+          <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <input type="text" id="memberSearch" placeholder="Search by name, Member ID or email">
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" id="membersTable">
+          <thead>
+            <tr>
+              <th>Member ID</th><th>Name</th><th>Email</th><th>Phone</th>
+              <th>Course</th><th>Semester</th><th>Books issued</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="membersEmpty" hidden>
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z"/></svg>
+          <p>No members found</p>
+          <span>Try a different search term</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ISSUE BOOK ---------- -->
+    <section class="view" id="view-issue">
+      <div class="view-head">
+        <div>
+          <h1>Issue Book</h1>
+          <p class="view-sub">Issue a book to a member</p>
+        </div>
+      </div>
+
+      <div class="panel form-panel">
+        <form id="issueForm" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="issueMember">Member</label>
+              <select id="issueMember" required></select>
+              <span class="field-error" data-for="issueMember"></span>
+            </div>
+            <div class="field">
+              <label for="issueBook">Book</label>
+              <select id="issueBook" required></select>
+              <span class="field-error" data-for="issueBook"></span>
+            </div>
+            <div class="field">
+              <label for="issueDate">Issue date</label>
+              <input type="date" id="issueDate" required>
+              <span class="field-error" data-for="issueDate"></span>
+            </div>
+            <div class="field">
+              <label for="dueDate">Due date</label>
+              <input type="date" id="dueDate" required>
+              <span class="field-error" data-for="dueDate"></span>
+            </div>
+          </div>
+
+          <div class="availability-box" id="issueAvailability" hidden></div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Issue Book</button>
+            <button type="reset" class="btn btn-ghost">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Currently issued</h2></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Txn ID</th><th>Book</th><th>Member</th><th>Issue date</th><th>Due date</th><th>Status</th></tr></thead>
+            <tbody id="issuedPreviewBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- RETURN BOOK ---------- -->
+    <section class="view" id="view-return">
+      <div class="view-head">
+        <div>
+          <h1>Return Book</h1>
+          <p class="view-sub">Process returns and calculate overdue fines</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-search">
+          <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <input type="text" id="returnSearch" placeholder="Search issued books by title, member or Txn ID">
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" id="returnTable">
+          <thead>
+            <tr><th>Txn ID</th><th>Member</th><th>Book</th><th>Issue date</th><th>Due date</th><th>Status</th><th>Fine</th><th></th></tr>
+          </thead>
+          <tbody id="returnTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="returnEmpty" hidden>
+          <svg viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <p>Nothing to return</p>
+          <span>All issued books have been returned</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- TRANSACTIONS ---------- -->
+    <section class="view" id="view-transactions">
+      <div class="view-head">
+        <div>
+          <h1>Transactions</h1>
+          <p class="view-sub">Full history of issues and returns</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-search">
+          <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <input type="text" id="txnSearch" placeholder="Search by book, member or Txn ID">
+        </div>
+        <select id="txnStatusFilter" class="select">
+          <option value="">All statuses</option>
+          <option value="Issued">Issued</option>
+          <option value="Overdue">Overdue</option>
+          <option value="Returned">Returned</option>
+        </select>
+        <select id="txnDateFilter" class="select">
+          <option value="">All dates</option>
+          <option value="today">Today</option>
+          <option value="week">This week</option>
+          <option value="month">This month</option>
+        </select>
+        <select id="txnSort" class="select">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>Txn ID</th><th>Book</th><th>Member</th><th>Issue date</th><th>Due date</th><th>Return date</th><th>Status</th><th>Fine</th></tr>
+          </thead>
+          <tbody id="txnTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="txnEmpty" hidden>
+          <svg viewBox="0 0 24 24"><path d="M9 3v2H4v2h1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7h1V5h-5V3H9z"/></svg>
+          <p>No transactions found</p>
+          <span>Try adjusting your search or filters</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- REPORTS ---------- -->
+    <section class="view" id="view-reports">
+      <div class="view-head">
+        <div>
+          <h1>Reports</h1>
+          <p class="view-sub">Generate and export library performance reports</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <select id="reportType" class="select">
+            <option value="total">Total books</option>
+            <option value="available">Available books</option>
+            <option value="issued">Issued books</option>
+            <option value="overdue">Overdue books</option>
+            <option value="returned">Returned books</option>
+            <option value="member">Member activity</option>
+            <option value="most-borrowed">Most borrowed books</option>
+            <option value="category">Books by category</option>
+            <option value="history">Issue / return history</option>
+          </select>
+          <select id="reportDateFilter" class="select">
+            <option value="all">All time</option>
+            <option value="today">Today</option>
+            <option value="week">This week</option>
+            <option value="month">This month</option>
+            <option value="custom">Custom range</option>
+          </select>
+          <input type="date" id="reportFrom" class="select" hidden>
+          <input type="date" id="reportTo" class="select" hidden>
+          <button class="btn btn-primary" id="btnGenerateReport">Generate Report</button>
+          <button class="btn btn-ghost" id="btnPrintReport">Print</button>
+          <button class="btn btn-ghost" id="btnExportReport">Export CSV</button>
+        </div>
+
+        <div id="reportSummary" class="stat-grid stat-grid-sm"></div>
+
+        <div class="table-wrap">
+          <table class="table" id="reportTable">
+            <thead id="reportTableHead"></thead>
+            <tbody id="reportTableBody"></tbody>
+          </table>
+          <div class="empty-state" id="reportEmpty" hidden>
+            <svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 0 1 1 1v16l-4-3-3 3-3-3-3 3-3-3-1 .8V4a1 1 0 0 1 1-1z"/></svg>
+            <p>No data for this selection</p>
+            <span>Try a different report type or date range</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===================== MODALS ===================== -->
+<div class="modal-backdrop" id="modalBackdrop">
+
+  <div class="modal" id="bookModal">
+    <div class="modal-head">
+      <h3 id="bookModalTitle">Add Book</h3>
+      <button class="icon-btn" data-close-modal>&times;</button>
+    </div>
+    <form id="bookForm" class="modal-body" novalidate>
+      <input type="hidden" id="bookEditId">
+      <div class="form-grid">
+        <div class="field">
+          <label for="fBookId">Book ID</label>
+          <input type="text" id="fBookId" placeholder="e.g. BK011">
+          <span class="field-error" data-for="fBookId"></span>
+        </div>
+        <div class="field">
+          <label for="fTitle">Title</label>
+          <input type="text" id="fTitle">
+          <span class="field-error" data-for="fTitle"></span>
+        </div>
+        <div class="field">
+          <label for="fAuthor">Author</label>
+          <input type="text" id="fAuthor">
+          <span class="field-error" data-for="fAuthor"></span>
+        </div>
+        <div class="field">
+          <label for="fIsbn">ISBN</label>
+          <input type="text" id="fIsbn" placeholder="978-3-16-148410-0">
+          <span class="field-error" data-for="fIsbn"></span>
+        </div>
+        <div class="field">
+          <label for="fCategory">Category</label>
+          <input type="text" id="fCategory" list="categoryList" placeholder="e.g. Computer Science">
+          <datalist id="categoryList"></datalist>
+          <span class="field-error" data-for="fCategory"></span>
+        </div>
+        <div class="field">
+          <label for="fPublisher">Publisher</label>
+          <input type="text" id="fPublisher">
+          <span class="field-error" data-for="fPublisher"></span>
+        </div>
+        <div class="field">
+          <label for="fYear">Publication year</label>
+          <input type="number" id="fYear" min="1900" max="2026">
+          <span class="field-error" data-for="fYear"></span>
+        </div>
+        <div class="field">
+          <label for="fTotalQty">Total quantity</label>
+          <input type="number" id="fTotalQty" min="1">
+          <span class="field-error" data-for="fTotalQty"></span>
+        </div>
+        <div class="field">
+          <label for="fAvailQty">Available copies</label>
+          <input type="number" id="fAvailQty" min="0">
+          <span class="field-error" data-for="fAvailQty"></span>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Book</button>
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal" id="memberModal">
+    <div class="modal-head">
+      <h3 id="memberModalTitle">Add Member</h3>
+      <button class="icon-btn" data-close-modal>&times;</button>
+    </div>
+    <form id="memberForm" class="modal-body" novalidate>
+      <input type="hidden" id="memberEditId">
+      <div class="form-grid">
+        <div class="field">
+          <label for="fMemberId">Member ID</label>
+          <input type="text" id="fMemberId" placeholder="e.g. MEM009">
+          <span class="field-error" data-for="fMemberId"></span>
+        </div>
+        <div class="field">
+          <label for="fMemberName">Student name</label>
+          <input type="text" id="fMemberName">
+          <span class="field-error" data-for="fMemberName"></span>
+        </div>
+        <div class="field">
+          <label for="fMemberEmail">Email</label>
+          <input type="email" id="fMemberEmail">
+          <span class="field-error" data-for="fMemberEmail"></span>
+        </div>
+        <div class="field">
+          <label for="fMemberPhone">Phone</label>
+          <input type="text" id="fMemberPhone" placeholder="10-digit mobile">
+          <span class="field-error" data-for="fMemberPhone"></span>
+        </div>
+        <div class="field">
+          <label for="fMemberCourse">Course / Department</label>
+          <input type="text" id="fMemberCourse">
+          <span class="field-error" data-for="fMemberCourse"></span>
+        </div>
+        <div class="field">
+          <label for="fMemberSemester">Semester</label>
+          <input type="number" id="fMemberSemester" min="1" max="8">
+          <span class="field-error" data-for="fMemberSemester"></span>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Member</button>
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal modal-sm" id="detailsModal">
+    <div class="modal-head">
+      <h3 id="detailsModalTitle">Details</h3>
+      <button class="icon-btn" data-close-modal>&times;</button>
+    </div>
+    <div class="modal-body" id="detailsModalBody"></div>
+  </div>
+
+  <div class="modal modal-sm" id="confirmModal">
+    <div class="modal-head">
+      <h3 id="confirmModalTitle">Are you sure?</h3>
+      <button class="icon-btn" data-close-modal>&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmModalText" class="confirm-text"></p>
+      <div class="form-actions">
+        <button class="btn btn-danger" id="confirmModalOk">Confirm</button>
+        <button class="btn btn-ghost" data-close-modal>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== TOASTS ===================== -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
