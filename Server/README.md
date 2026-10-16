@@ -5,7 +5,7 @@ REST backend for the Library Management System frontend, using Node.js + Express
 ## 1. Install dependencies
 
 ```
-cd server
+cd Server
 npm install
 ```
 
@@ -19,7 +19,7 @@ mysql -u root -p library_db < seed.sql
 ```
 
 This creates the `library_db` database with `books`, `members`, and `transactions`
-tables, and loads the same demo data the frontend prototype ships with.
+tables, and loads the demo data.
 
 ## 3. Configure environment variables
 
@@ -42,7 +42,7 @@ LibraTrack API running on http://localhost:5000
 ✓ Connected to MySQL database: library_db
 ```
 
-## 5. Test the endpoints
+## 5. API Endpoints
 
 | Method | Endpoint                        | Description                        |
 |--------|----------------------------------|-------------------------------------|
@@ -50,7 +50,7 @@ LibraTrack API running on http://localhost:5000
 | POST   | /api/books                       | Add a book                         |
 | PUT    | /api/books/:id                   | Update a book                      |
 | DELETE | /api/books/:id                   | Delete a book                      |
-| GET    | /api/members                     | List members (with active issues) |
+| GET    | /api/members                     | List members (with active issues)  |
 | POST   | /api/members                     | Add a member                       |
 | PUT    | /api/members/:id                 | Update a member                    |
 | DELETE | /api/members/:id                 | Delete a member (blocked if active issues) |
@@ -62,17 +62,5 @@ Try `GET http://localhost:5000/api/books` in your browser once the server is run
 
 ## 6. Connect the frontend
 
-In `script.js`, the `Store` object is the only place that touches data. Replace each
-method's body with a `fetch()` call to the matching endpoint above — for example:
-
-```js
-async getBooks() {
-  const res = await fetch("http://localhost:5000/api/books");
-  return res.json();
-}
-```
-
-Every place in the UI code that calls `Store.getBooks()` etc. stays exactly the same;
-you're only swapping what happens inside `Store`. Because `fetch` is asynchronous, the
-call sites will need `await` in front of them once you make this change (currently they
-call `Store` synchronously against localStorage).
+The frontend (`script.js`) already calls this API at `http://localhost:5000/api`.
+Start the server, then open `index.html` in your browser.
